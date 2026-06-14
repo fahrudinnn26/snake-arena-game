@@ -1,0 +1,231 @@
+/* =======================================================
+   style.css - Pusat Visual Snake Arena (Smart Center & Auto-Shrink)
+   ======================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    -webkit-tap-highlight-color: transparent; 
+    touch-action: manipulation; 
+}
+
+body {
+    background-color: #010205; 
+    font-family: 'Orbitron', sans-serif;
+    width: 100vw; 
+    height: 100dvh; 
+    overflow: hidden; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    color: #fff;
+    user-select: none; 
+}
+
+/* =======================================================
+   TRIK ROTASI HP (Paksa Landscape)
+   ======================================================= */
+@media screen and (max-width: 900px) and (orientation: portrait) {
+    body::before {
+        content: "PUTAR LAYAR HP KE LANDSCAPE UNTUK BERMAIN";
+        position: absolute; top: 0; left: 0; width: 100vw; height: 100dvh;
+        background: #000; color: #00f2ff; font-family: 'Share Tech Mono', monospace;
+        display: flex; justify-content: center; align-items: center; z-index: 9999;
+        text-align: center; font-size: 1.2rem; font-weight: bold; padding: 20px;
+    }
+}
+
+#game-container { 
+    position: relative; 
+    width: 100vw; 
+    height: 100dvh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background: radial-gradient(circle, rgba(13,13,20,0) 40%, rgba(5,5,8,0.95) 100%); 
+}
+
+canvas { 
+    position: absolute; 
+    top: 0; left: 0; 
+    width: 100vw; 
+    height: 100dvh; 
+    z-index: 1; 
+    display: block;
+}
+
+/* =======================================================
+   1. SISTEM LAYAR (SCREEN) DENGAN MAGIC CENTERING
+   ======================================================= */
+.screen {
+    position: absolute;
+    width: 100vw; height: 100dvh;
+    z-index: 100;
+    display: none; 
+    flex-direction: column;
+    align-items: center;
+    background: rgba(1, 2, 5, 0.4); 
+    backdrop-filter: none; 
+    -webkit-backdrop-filter: none;
+    overflow-y: auto; 
+    overflow-x: hidden;
+    padding: 40px 10px; /* Jarak aman atas bawah untuk scroll */
+}
+
+.screen.active { 
+    display: flex; 
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* 🔥 MAGIC TRICK: OTOMATIS CENTER BILA MUAT, SCROLL BILA LEBIH 🔥 */
+.screen.active::before,
+.screen.active::after {
+    content: "";
+    margin: auto;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* =======================================================
+   🔥 AUTO-SHRINK KHUSUS HP (ANTI NGE-ZOOM) 🔥
+   ======================================================= */
+@media screen and (max-height: 650px), screen and (max-width: 800px) {
+    .main-title { font-size: clamp(2rem, 7vw, 3.5rem) !important; margin-bottom: 5px !important; }
+    .tagline { font-size: 0.8rem !important; margin-bottom: 15px !important; }
+    .spec-indicator { margin-bottom: 15px !important; }
+    
+    .btn-cyber { padding: 10px 20px !important; font-size: 0.9rem !important; width: 90% !important; max-width: 320px !important; }
+    .button-group { gap: 10px !important; padding-bottom: 10px !important; }
+    
+    .settings-box, .customize-box { padding: 15px !important; margin-bottom: 15px !important; max-width: 95% !important; }
+    .setting-item { margin-bottom: 10px !important; }
+    .setting-item label { font-size: 0.8rem !important; }
+    select, input[type=range], #player-name-input { padding: 8px !important; font-size: 0.8rem !important; }
+
+    /* Boot Sequence & Game Over Shrink */
+    #pre-game-modal h1, #lose-modal h1 { font-size: 2rem !important; margin-bottom: 10px !important; }
+    #pre-game-modal > div:nth-child(2), #lose-box { padding: 15px !important; margin-bottom: 15px !important; }
+    #pre-game-modal p { font-size: 0.85rem !important; }
+    #pre-game-modal span { font-size: 0.8rem !important; padding: 2px 6px !important; }
+    #txt-lose-score, #txt-lose-pc, #txt-lose-time { font-size: 1.2rem !important; }
+}
+
+/* =======================================================
+   2. TEKS & JUDUL BERDENYUT + EFEK GLITCH
+   ======================================================= */
+.main-title { 
+    font-size: clamp(3rem, 10vw, 6rem); 
+    font-weight: 900; 
+    letter-spacing: 15px; 
+    position: relative; 
+    margin-bottom: 5px; 
+    color: #fff;
+    animation: neonBreathe 3s infinite alternate; 
+    text-align: center;
+}
+
+.main-title::before, .main-title::after {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; background: transparent; pointer-events: none;
+}
+
+.main-title::before { left: 3px; text-shadow: -2px 0 #ff007f; animation: glitch-anim-1 3s infinite linear alternate-reverse; }
+.main-title::after { left: -3px; text-shadow: -2px 0 #00f2ff; animation: glitch-anim-2 4s infinite linear alternate-reverse; }
+
+@keyframes neonBreathe {
+    0% { text-shadow: 0 0 15px rgba(0, 242, 255, 0.5), 0 0 30px rgba(0, 242, 255, 0.3); }
+    100% { text-shadow: 0 0 25px rgba(0, 242, 255, 1), 0 0 50px rgba(0, 242, 255, 0.6), 0 0 70px rgba(0, 242, 255, 0.4); }
+}
+
+.tagline { color: #00f2ff; letter-spacing: 4px; font-size: 1rem; margin-bottom: 25px; font-weight: 700; font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 5px rgba(0,242,255,0.5); text-align: center; }
+
+/* =======================================================
+   3. INDIKATOR SPEK (HARDWARE STYLE)
+   ======================================================= */
+.spec-indicator { margin-bottom: 40px; text-align: center; font-family: 'Share Tech Mono', monospace; }
+.spec-bar { width: 220px; height: 10px; background: rgba(0, 0, 0, 0.8); margin: 10px auto; border: 1px solid #00f2ff; box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
+#spec-fill { height: 100%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.fill-low { width: 33%; background: #00ff41; box-shadow: 0 0 10px #00ff41; }
+.fill-med { width: 66%; background: #ffff00; box-shadow: 0 0 10px #ffff00; }
+.fill-ultra { width: 100%; background: #ff007f; box-shadow: 0 0 10px #ff007f; }
+
+/* =======================================================
+   4. TOMBOL CYBER & TOMBOL UI IN-GAME
+   ======================================================= */
+.button-group { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+
+button, .btn-cyber, .btn-mini {
+    position: relative; z-index: 1; transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.27) !important; outline: none;
+}
+
+.btn-cyber { 
+    background: rgba(0, 0, 0, 0.8); border: 1px solid #00f2ff; color: #00f2ff; padding: 16px 40px; font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 2px; cursor: pointer; width: 380px; max-width: 95%; text-transform: uppercase;
+}
+
+.btn-cyber:hover, .btn-mini:hover { background: rgba(0, 242, 255, 0.2) !important; color: #fff !important; border-color: #fff !important; box-shadow: 0 0 25px rgba(0, 242, 255, 0.6) !important; transform: translateY(-3px) scale(1.02) !important; }
+.btn-cyber:active, .btn-mini:active { transform: translateY(2px) scale(0.96) !important; filter: brightness(0.7) !important; box-shadow: 0 0 5px rgba(0, 242, 255, 0.8) !important; }
+.btn-mini { background: rgba(0, 0, 0, 0.9); border: 1px solid #00f2ff; color: #00f2ff; padding: 8px 15px; cursor: pointer; font-family: 'Orbitron'; font-size: 0.8rem; font-weight: bold; border-radius: 4px; }
+
+#btn-pause-game { position: absolute !important; top: 20px !important; right: 20px !important; z-index: 900; }
+
+#btn-sprint {
+    position: absolute !important; bottom: 25px !important; right: 25px !important; 
+    width: clamp(65px, 15vw, 85px) !important; height: clamp(65px, 15vw, 85px) !important; 
+    border-radius: 50%; background: rgba(255, 170, 0, 0.2); border: 3px solid #ffaa00; color: #ffaa00; 
+    font-family: 'Share Tech Mono', monospace; font-weight: bold; font-size: 16px; 
+    text-shadow: 0 0 5px #ffaa00; box-shadow: 0 0 20px rgba(255, 170, 0, 0.5); z-index: 1000; cursor: pointer; line-height: 1.2; outline: none; transition: 0.1s;
+}
+#btn-sprint:active { transform: scale(0.9); background: rgba(255, 170, 0, 0.5); box-shadow: 0 0 30px rgba(255, 170, 0, 0.8); }
+
+/* =======================================================
+   5. BOX PENGATURAN & KUSTOMISASI
+   ======================================================= */
+.settings-box, .customize-box { 
+    background: rgba(10, 10, 15, 0.7); border: 1px solid rgba(0, 242, 255, 0.3); border-left: 4px solid #00f2ff; padding: 35px; width: 550px; max-width: 95%; margin-bottom: 25px; font-family: 'Share Tech Mono', monospace; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6); backdrop-filter: none; 
+}
+.customize-box { border-color: rgba(255, 0, 127, 0.3); border-left-color: #ff007f; }
+.setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+.setting-item label { color: #00f2ff; font-size: 0.95rem; font-weight: bold; letter-spacing: 1px;}
+select { background: rgba(0, 0, 0, 0.9); color: #00f2ff; border: 1px solid #00f2ff; padding: 8px 10px; font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; width: 100%; max-width: 250px; outline: none; cursor: pointer; transition: 0.2s; }
+select:hover, select:focus { box-shadow: 0 0 15px rgba(0, 242, 255, 0.3); background: rgba(0, 242, 255, 0.2); }
+#player-name-input { width: 100%; background: rgba(0, 0, 0, 0.9); border: 1px dashed #ff007f; color: #fff; padding: 15px; font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; font-weight: bold; outline: none; transition: all 0.3s ease; text-transform: uppercase; text-align: center; letter-spacing: 2px; }
+#player-name-input:focus { border: 1px solid #ff007f; box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); background: rgba(255, 0, 127, 0.1); transform: scale(1.02); }
+input[type=range] { -webkit-appearance: none; width: 100%; max-width: 250px; background: transparent; }
+input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; background: rgba(0,0,0,0.9); border: 1px solid #00f2ff; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 18px; width: 18px; background: #00f2ff; margin-top: -7px; cursor: pointer; box-shadow: 0 0 10px #00f2ff; transition: 0.2s; }
+input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.3); }
+
+/* =======================================================
+   6. PREVIEW AREA & MAP SELECTION
+   ======================================================= */
+.preview-area { background: rgba(0,0,0,0.9); margin-bottom: 20px; border: 1px solid #333; padding: 5px; border-radius: 4px; box-shadow: inset 0 0 20px rgba(0,0,0,1); }
+.color-grid { display: flex; justify-content: center; gap: 20px; margin-top: 15px; flex-wrap: wrap;}
+.color-opt { width: 45px; height: 45px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.27); }
+.color-opt:hover { transform: scale(1.15); }
+.color-opt.active { border-color: #fff; transform: scale(1.25); box-shadow: 0 0 20px currentColor; }
+
+.map-grid { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.map-opt { padding: 10px; border: 2px solid #333; cursor: pointer; font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; font-weight: bold; width: 45%; transition: 0.2s; background: rgba(255,255,255,0.05); color: #888; }
+.map-opt:hover { transform: scale(1.05); }
+
+/* =======================================================
+   7. EFEK ATMOSFER & LAIN-LAIN
+   ======================================================= */
+.scanlines { position: absolute; top: 0; left: 0; width: 100vw; height: 100dvh; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0, 242, 255, 0.05) 50%, rgba(0, 242, 255, 0.05)); background-size: 100% 6px; z-index: 200; pointer-events: none; animation: scanline-scroll 10s linear infinite; }
+.lang-toggle-container { position: absolute; top: 25px; right: 25px; z-index: 1000; }
+.audio-hint { font-size: 0.75rem; color: #ffaa00; margin-top: 15px; font-family: 'Share Tech Mono', monospace; letter-spacing: 1px; animation: blink 2s infinite; text-align: center;}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.footer-info { position: relative; margin-top: 20px; padding-bottom: 10px; opacity: 0.4; font-size: 0.75rem; font-family: 'Share Tech Mono', monospace; letter-spacing: 2px; }
+
+/* =========================================
+   KEYFRAMES ANIMASI TAMBAHAN
+   ========================================= */
+@keyframes scanline-scroll { 0% { background-position: 0 0; } 100% { background-position: 0 100dvh; } }
+@keyframes glitch-anim-1 { 0% { clip: rect(20px, 9999px, 86px, 0); } 5% { clip: rect(69px, 9999px, 15px, 0); } 10% { clip: rect(40px, 9999px, 53px, 0); } 15% { clip: rect(8px, 9999px, 12px, 0); } 20% { clip: rect(89px, 9999px, 99px, 0); } 25% { clip: rect(12px, 9999px, 10px, 0); } 30% { clip: rect(33px, 9999px, 18px, 0); } 35% { clip: rect(66px, 9999px, 88px, 0); } 40%, 100% { clip: rect(0, 0, 0, 0); } }
+@keyframes glitch-anim-2 { 0% { clip: rect(65px, 9999px, 100px, 0); } 5% { clip: rect(52px, 9999px, 74px, 0); } 10% { clip: rect(79px, 9999px, 85px, 0); } 15% { clip: rect(75px, 9999px, 5px, 0); } 20% { clip: rect(67px, 9999px, 61px, 0); } 25% { clip: rect(14px, 9999px, 79px, 0); } 30%, 100% { clip: rect(0, 0, 0, 0); } }

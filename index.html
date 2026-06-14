@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SNAKE ARENA: HARDWARE EDITION</title>
+    <link rel="stylesheet" href="style.css?v=1012">
+</head>
+<body>
+    <audio id="bgMusic" loop preload="auto">
+        <source src="backsound.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="gameMusic" loop preload="auto">
+        <source src="nickpanekaiassets-356-8-bit-chiptune-game-music-357518.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="winMusic" preload="auto">
+        <source src="freesound_community-piglevelwin2mp3-14800.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="loseMusic" preload="auto">
+        <source src="drummusiclooper5000-lose-sfx-365579.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="rampageMusic" preload="auto">
+        <source src="poorartistt-snake-hiss-sound-effect-no-copyright-410798.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="game-container">
+        <div class="scanlines"></div>
+
+        <div class="lang-toggle-container">
+            <button id="btn-lang" class="btn-mini">ID | EN</button>
+        </div>
+
+        <div id="main-menu" class="screen active">
+            
+            <div style="position: absolute; top: 25px; left: 25px; z-index: 1000;">
+                <button id="btn-fs-toggle" class="btn-mini" style="font-size: 0.9rem; padding: 8px 15px; font-weight: bold; background: rgba(0,0,0,0.8); border: 1px solid #00f2ff; color: #00f2ff; cursor: pointer; box-shadow: 0 0 10px rgba(0,242,255,0.2);">🔲 FULLSCREEN</button>
+            </div>
+
+            <h1 class="main-title" data-text="SNAKE ARENA">SNAKE ARENA</h1>
+            <div id="txt-tagline" class="tagline" data-id="HARDWARE ASSEMBLY EDITION" data-en="HARDWARE ASSEMBLY EDITION">HARDWARE ASSEMBLY EDITION</div>
+            
+            <div class="spec-indicator">
+                <span id="txt-spec-label" data-id="BEBAN_GPU:" data-en="GPU_LOAD:">BEBAN_GPU:</span>
+                <div class="spec-bar"><div id="spec-fill" class="fill-med"></div></div>
+                <span id="txt-spec-rank">STABLE</span>
+            </div>
+
+            <div class="button-group">
+                <button id="btn-start" class="btn-cyber" data-id="MULAI GAME" data-en="START GAME">MULAI GAME</button>
+                <button id="btn-customize" class="btn-cyber" data-id="KUSTOMISASI KARAKTER" data-en="CHARACTER CUSTOMIZATION">KUSTOMISASI KARAKTER</button>
+                <button id="btn-stats" class="btn-cyber" data-id="STATISTIK PENCAPAIAN" data-en="ACHIEVEMENT STATS">STATISTIK PENCAPAIAN</button>
+                <button id="btn-guide" class="btn-cyber" data-id="PANDUAN BERMAIN" data-en="HOW TO PLAY">PANDUAN BERMAIN</button>
+                <button id="btn-settings" class="btn-cyber" data-id="PENGATURAN" data-en="SETTINGS">PENGATURAN</button>
+            </div>
+
+            <div id="audio-status" class="audio-hint" data-id="KLIK DI MANA SAJA UNTUK MENGAKTIFKAN AUDIO" data-en="CLICK ANYWHERE TO START AUDIO">CLICK ANYWHERE TO START AUDIO</div>
+            <div class="footer-info">SYSTEM_BUILD // UNILA_PTI_2026</div>
+        </div>
+
+        <div id="stats-menu" class="screen">
+            <h2 class="neon-blue" style="font-size: 2.5rem; margin-bottom: 20px; letter-spacing: 5px; text-align: center;" data-id="STATISTIK SISTEM" data-en="SYSTEM STATISTICS">STATISTIK SISTEM</h2>
+            <div class="customize-box" style="background: rgba(15, 15, 20, 0.95); border: 1px solid #00f2ff; border-left: 6px solid #00f2ff; padding: 25px; width: 100%; max-width: 500px; margin-bottom: 25px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); font-family: 'Share Tech Mono', monospace; text-align:left;">
+                <p style="color:#ccc; font-size:0.9rem; margin-bottom:15px;" data-id="Rekor tertinggi berdasarkan CPU Power (Tingkat Kesulitan):" data-en="Highest records based on CPU Power (Difficulty Level):">Rekor tertinggi berdasarkan CPU Power (Tingkat Kesulitan):</p>
+                <div id="stats-container" style="display:flex; flex-direction:column; gap:10px;"></div>
+            </div>
+            <button id="btn-stats-back" class="btn-cyber" data-id="KEMBALI KE MENU" data-en="RETURN TO MENU">KEMBALI KE MENU</button>
+        </div>
+
+        <div id="customize-menu" class="screen">
+            <h2 id="txt-cust-title" class="neon-blue" style="font-size: 2.5rem; margin-bottom: 20px; letter-spacing: 5px; text-align: center;">REPROGRAM_SNAKE</h2>
+            <div class="customize-box" style="background: rgba(15, 15, 20, 0.95); border: 1px solid #ff007f; border-left: 6px solid #ff007f; padding: 20px; width: 100%; max-width: 450px; margin-bottom: 25px; box-shadow: 0 0 20px rgba(255, 0, 127, 0.2);">
+                
+                <div class="setting-item" style="flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 15px;">
+                    <label id="txt-label-name" style="color: #ff007f; font-size: 0.9rem; letter-spacing: 2px;" data-id="[ IDENTITAS_PLAYER ]" data-en="[ PLAYER_IDENTITY ]">[ IDENTITAS_PLAYER ]</label>
+                    <input type="text" id="player-name-input" maxlength="12" placeholder="MASUKKAN NAMA..." autocomplete="off" style="width: 100%; background: rgba(0, 0, 0, 0.8); border: 1px dashed #ff007f; color: #fff; padding: 12px 15px; font-family: 'Share Tech Mono', monospace; font-size: 1rem; outline: none; text-transform: uppercase;">
+                </div>
+                
+                <div class="preview-area" style="background:#050505; margin-bottom: 15px; border: 1px solid #333; height: 120px; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden;">
+                    <canvas id="previewCanvas" width="300" height="150"></canvas>
+                    <div class="scanlines" style="opacity: 0.5;"></div>
+                </div>
+
+                <p id="txt-select-skin" style="color:#ff007f; font-size: 0.8rem; margin-bottom: 10px; letter-spacing: 1px; text-align: center;" data-id="WARNA_RGB_CORE:" data-en="CORE_RGB_COLOR:">WARNA_RGB_CORE:</p>
+                <div class="color-grid" style="display:flex; justify-content:center; gap:15px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <div class="color-opt active" data-index="0" style="background:#00f2ff; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;"></div>
+                    <div class="color-opt" data-index="1" style="background:#ff007f; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;"></div>
+                    <div class="color-opt" data-index="2" style="background:#39ff14; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;"></div>
+                    <div class="color-opt" data-index="3" style="background:#ffff00; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;"></div>
+                    <div class="color-opt" data-index="4" style="background:#bc13fe; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;"></div>
+                </div>
+
+                <p style="color:#00f2ff; font-size: 0.8rem; margin-bottom: 10px; letter-spacing: 1px; text-align: center; border-top: 1px dashed #333; padding-top:15px;" data-id="TEMA ARENA:" data-en="ARENA THEME:">TEMA ARENA:</p>
+                <div class="map-grid" style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                    <button class="map-opt active" data-map="CYBER" style="padding: 10px; background: rgba(0, 242, 255, 0.2); border: 2px solid #00f2ff; color: #fff; cursor: pointer; font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; font-weight: bold; width: 45%;">🔥 CYBERBOARD</button>
+                    <button class="map-opt" data-map="WINTER" style="padding: 10px; background: rgba(160, 238, 255, 0.1); border: 2px solid #333; color: #a0eeff; cursor: pointer; font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; font-weight: bold; width: 45%;">❄️ CRYO COOLING</button>
+                </div>
+            </div>
+            
+            <button id="btn-cust-back" class="btn-cyber" data-id="SIMPAN & KEMBALI" data-en="SAVE & RETURN">SIMPAN & KEMBALI</button>
+        </div>
+
+        <div id="settings-menu" class="screen">
+            <h2 id="txt-settings-title" class="neon-blue" data-id="PENGATURAN SISTEM" data-en="SYSTEM SETTINGS">PENGATURAN SISTEM</h2>
+            <div class="settings-box" style="width: 100%; max-width: 550px;">
+                <div class="setting-item">
+                    <label id="txt-label-vol" data-id="VOLUME AUDIO" data-en="AUDIO VOLUME">VOLUME AUDIO</label>
+                    <input type="range" id="vol-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; max-width: 250px;">
+                </div>
+                <div class="setting-item">
+                    <label id="txt-label-fps" data-id="REFRESH RATE (FPS)" data-en="REFRESH RATE (FPS)">REFRESH RATE (FPS)</label>
+                    <select id="fps-select" style="width: 100%; max-width: 250px;">
+                        <option value="30">30 FPS (SAVER)</option>
+                        <option value="60">60 FPS (STANDARD)</option>
+                        <option value="120" selected>120 FPS (ULTRA_SMOOTH)</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label id="txt-label-graphic" data-id="KUALITAS GRAFIK" data-en="GRAPHIC QUALITY">KUALITAS GRAFIK</label>
+                    <select id="graphic-select" style="width: 100%; max-width: 250px;">
+                        <option value="4" data-id="RENDAH (Flat Design)" data-en="LOW (Flat Design)">RENDAH (Flat Design)</option>
+                        <option value="10" selected data-id="SEDANG (Neon & 3D Texture)" data-en="MEDIUM (Neon & 3D Texture)">SEDANG (Neon & 3D Texture)</option>
+                        <option value="20" data-id="ULTRA (Full Render)" data-en="ULTRA (Full Render)">ULTRA (Full Render)</option>
+                    </select>
+                </div>
+            </div>
+            <button id="btn-settings-back" class="btn-cyber" data-id="SIMPAN & KEMBALI" data-en="SAVE & RETURN">SIMPAN & KEMBALI</button>
+        </div>
+
+        <div id="guide-menu" class="screen">
+            <h2 id="txt-guide-title" class="neon-blue" style="font-size: 2.5rem; margin-bottom: 20px; letter-spacing: 5px; text-align: center;">PROTOKOL_SISTEM</h2>
+            <div class="customize-box" style="background: rgba(15, 15, 20, 0.95); border: 1px solid #00f2ff; border-left: 6px solid #00f2ff; padding: 25px; width: 100%; max-width: 650px; margin-bottom: 25px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); text-align: left; font-family: 'Share Tech Mono', monospace;">
+                
+                <div style="margin-bottom: 20px;">
+                    <span style="color: #00f2ff; font-weight: bold; font-size: 1.1rem; display: block; border-bottom: 1px solid #00f2ff; padding-bottom: 5px;">[01] OBJEKTIF & MAHKOTA RAJA</span>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">Kumpulkan komponen Microchip asli di arena sesuai 'TARGET'. Pemain atau Bot dengan skor tertinggi mendapat 👑 MAHKOTA EMAS sebagai Raja Arena.</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <span style="color: #00f2ff; font-weight: bold; font-size: 1.1rem; display: block; border-bottom: 1px solid #00f2ff; padding-bottom: 5px;">[02] KONTROL & SPRINT</span>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">Gunakan Joystick dengan menahan layar. Kamu BEBAS menembus badanmu sendiri!<br><br><strong>⚡ BOOST (SPRINT):</strong> Gunakan tombol ⚡ di kanan bawah. <strong>PERINGATAN:</strong> Sprint membakar skormu dan menyusutkan badan!</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <span style="color: #ffaa00; font-weight: bold; font-size: 1.1rem; display: block; border-bottom: 1px solid #ffaa00; padding-bottom: 5px;">[03] ITEM POWER-UP</span>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">⚡ <strong>OVERCLOCK (Orange):</strong> Kecepatan super gratis.<br>❄️ <strong>UNDERVOLT (Biru):</strong> Mode lambat untuk presisi sempit.</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <span style="color: #ff007f; font-weight: bold; font-size: 1.1rem; display: block; border-bottom: 1px solid #ff007f; padding-bottom: 5px;">[04] MODE RAMPAGE (NGAMUK)</span>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">Merakit 1 PC memicu <strong>RAMPAGE</strong>. Kamu bisa <strong>MENGHANCURKAN BOT / MALWARE</strong> dengan menabraknya!</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <span style="color: #ff0000; font-weight: bold; font-size: 1.1rem; display: block; border-bottom: 1px solid #ff0000; padding-bottom: 5px;">[05] ANCAMAN (KORSLET)</span>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">Menabrak Tembok Arena, Firewall, Bad Sector, atau Kepala Bot akan menyebabkan <strong>CRITICAL FAILURE (Mati)</strong>.</p>
+                </div>
+
+                <div>
+                    <span style="color: #bc13fe; font-weight: bold; font-size: 1.1rem; display: block; border-bottom: 1px solid #bc13fe; padding-bottom: 5px;">[06] KASTA BOT AI</span>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">Bot AI cerdas dan berebut makanan. Waspada terhadap Bot Raksasa sejak awal game!</p>
+                </div>
+            </div>
+            <div style="padding-bottom: 30px;">
+                <button id="btn-back" class="btn-cyber" data-id="MENGERTI & KEMBALI" data-en="UNDERSTOOD & RETURN">MENGERTI & KEMBALI</button>
+            </div>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <button id="btn-pause-game" style="display: none; position: absolute; top: 30px; right: 40px; padding: 10px 20px; background: rgba(0, 242, 255, 0.1); border: 2px solid #00f2ff; color: #00f2ff; font-family: 'Share Tech Mono', monospace; font-size: 16px; font-weight: bold; cursor: pointer; text-shadow: 0 0 5px #00f2ff; z-index: 900; transition: 0.2s;" data-id="|| JEDA" data-en="|| PAUSE">|| PAUSE</button>
+
+        <button id="btn-sprint" style="display: none; position: absolute; bottom: 40px; right: 40px; width: 85px; height: 85px; border-radius: 50%; background: rgba(255, 170, 0, 0.2); border: 3px solid #ffaa00; color: #ffaa00; font-family: 'Share Tech Mono', monospace; font-weight: bold; font-size: 16px; text-shadow: 0 0 5px #ffaa00; box-shadow: 0 0 20px rgba(255, 170, 0, 0.5); z-index: 800; cursor: pointer; user-select: none; line-height: 1.2;">⚡<br>BOOST</button>
+
+        <div id="pre-game-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100dvh; background: rgba(5,5,10,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; padding: 40px 10px; color: #00f2ff; font-family: 'Share Tech Mono', monospace; backdrop-filter: none;">
+            
+            <h1 style="font-size: clamp(2rem, 8vw, 3.5rem); text-shadow: 0 0 25px #00f2ff; margin-bottom: 20px; letter-spacing: 5px; text-transform: uppercase; text-align: center;">System_Boot_Sequence</h1>
+            
+            <div style="background: linear-gradient(180deg, rgba(0, 242, 255, 0.1) 0%, rgba(0, 0, 0, 0.5) 100%); border: 1px solid #00f2ff; border-top: 4px solid #00f2ff; border-bottom: 4px solid #ff007f; padding: 25px; width: 100%; max-width: 680px; text-align: left; margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);">
+                
+                <div style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+                    <span style="background: #00f2ff; color: #000; padding: 3px 10px; font-weight: bold; margin-right: 15px;">MISI</span>
+                    <p style="color: #ddd; margin: 0; font-size: 1rem;">Kumpulkan Microchip TARGET. Raih skor tertinggi untuk menjadi Raja Arena 👑.</p>
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+                    <span style="background: #00f2ff; color: #000; padding: 3px 10px; font-weight: bold; margin-right: 15px;">GERAK</span>
+                    <p style="color: #ddd; margin: 0; font-size: 1rem;">Geser Joystick. Tekan SPASI/BOOST untuk ngebut (Membakar Skor!).</p>
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+                    <span style="background: #ffaa00; color: #000; padding: 3px 10px; font-weight: bold; margin-right: 15px;">ITEM</span>
+                    <p style="color: #ffaa00; margin: 0; font-size: 1rem; text-shadow: 0 0 5px rgba(255,170,0,0.5);">Selesaikan 1 PC untuk memicu RAMPAGE MODE (Makan Bot & Malware)!</p>
+                </div>
+                
+                <div style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+                    <span style="background: #ff0000; color: #fff; padding: 3px 10px; font-weight: bold; margin-right: 15px;">AWAS</span>
+                    <p style="color: #ff9999; margin: 0; font-size: 1rem;">Tembok Arena, Firewall, dan Bad Sector TETAP MEMATIKAN saat Rampage.</p>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+                    <span style="background: #39ff14; color: #000; padding: 3px 10px; font-weight: bold; margin-right: 15px;">HACK</span>
+                    <p style="color: #39ff14; margin: 0; font-size: 1rem; text-shadow: 0 0 8px rgba(57,255,20,0.5);">Potong jalur Bot! Serap datanya jika kepalanya menabrakmu.</p>
+                </div>
+
+                <div style="display: flex; align-items: flex-start;">
+                    <span style="background: #bc13fe; color: #fff; padding: 3px 10px; font-weight: bold; margin-right: 15px;">MODE</span>
+                    <p style="color: #e5b3ff; margin: 0; font-size: 1rem;">Awas Bot Raksasa cerdas berkeliaran dari awal!</p>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; padding-bottom: 40px;">
+                <button id="btn-mulai" style="padding: 12px 25px; background: rgba(0, 242, 255, 0.1); border: 2px solid #00f2ff; color: #fff; font-family: inherit; font-size: 1.1rem; font-weight: bold; cursor: pointer; text-shadow: 0 0 5px #fff; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); transition: 0.2s;">INITIALIZE</button>
+                <button id="btn-panduan-ingame" style="padding: 12px 25px; background: rgba(255, 170, 0, 0.1); border: 2px solid #ffaa00; color: #ffaa00; font-family: inherit; font-size: 1.1rem; cursor: pointer; transition: 0.2s;">MANUAL BOOK</button>
+                <button id="btn-menu-ingame" style="padding: 12px 25px; background: rgba(255, 0, 127, 0.1); border: 2px solid #ff007f; color: #ff007f; font-family: inherit; font-size: 1.1rem; cursor: pointer; transition: 0.2s;">SYSTEM ABORT</button>
+            </div>
+        </div>
+
+        <div id="pause-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100dvh; background: rgba(5,5,10,0.8); z-index: 2000; flex-direction: column; justify-content: center; align-items: center; color: #00f2ff; font-family: 'Share Tech Mono', monospace; backdrop-filter: blur(8px);">
+            <h1 style="font-size: clamp(3rem, 10vw, 4rem); text-shadow: 0 0 25px #00f2ff; margin-bottom: 30px; letter-spacing: 5px;">SYSTEM_PAUSED</h1>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                <button id="btn-resume-game" style="padding: 15px 35px; background: rgba(0, 242, 255, 0.1); border: 2px solid #00f2ff; color: #fff; font-family: inherit; font-size: 1.2rem; font-weight: bold; cursor: pointer; text-shadow: 0 0 5px #fff; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); transition: 0.2s;">LANJUTKAN</button>
+                <button id="btn-quit-game" style="padding: 15px 30px; background: rgba(255, 0, 127, 0.1); border: 2px solid #ff007f; color: #ff007f; font-family: inherit; font-size: 1.1rem; cursor: pointer; transition: 0.2s;">KELUAR MENU UTAMA</button>
+            </div>
+        </div>
+
+        <div id="countdown-overlay" style="display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; color: #39ff14; font-size: clamp(8rem, 20vw, 12rem); font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 40px #39ff14; font-weight: bold;"></div>
+
+        <div id="lose-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100dvh; background: rgba(5,5,8,0.9); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; padding: 40px 10px; color: #ff007f; font-family: 'Share Tech Mono', monospace; backdrop-filter: none;">
+            <h1 id="lose-title" style="font-size: clamp(2rem, 8vw, 3.5rem); text-align:center; text-shadow: 0 0 30px #ff007f; margin-bottom: 20px; text-transform:uppercase;">CRITICAL FAILURE!</h1>
+            
+            <div id="lose-box" style="background: rgba(255, 0, 127, 0.1); border: 1px solid #ff007f; padding: 25px; border-radius: 10px; width: 100%; max-width: 500px; text-align: left; margin-bottom: 30px; box-shadow: 0 0 30px rgba(255, 0, 127, 0.3);">
+                <p style="margin-bottom: 10px; font-size: 1.1rem; color: #ffaa00;"><strong>[ SYSTEM REPORT ]</strong> <span id="txt-lose-reason">CRITICAL FATAL ERROR.</span></p>
+                <p style="margin-bottom: 10px; font-size: 1.1rem; color: #fff;">[ TOTAL_SCORE ] <span id="txt-lose-score" style="font-size: 1.5rem; font-weight:bold; color: #ff007f; text-shadow: 0 0 10px #ff007f;">0000</span></p>
+                <p style="margin-bottom: 10px; font-size: 1.1rem; color: #fff;">[ PC_BUILT ] <span id="txt-lose-pc" style="font-size: 1.5rem; font-weight:bold; color: #00f2ff; text-shadow: 0 0 10px #00f2ff;">0</span></p>
+                <p style="margin-bottom: 10px; font-size: 1.1rem; color: #fff;">[ TIME_SURVIVED ] <span id="txt-lose-time" style="font-size: 1.5rem; font-weight:bold; color: #ff007f; text-shadow: 0 0 10px #ff007f;">00:00</span></p>
+            </div>
+            
+            <div style="display: flex; gap: 15px; flex-wrap:wrap; justify-content:center; padding-bottom: 40px;">
+                <button id="btn-lose-replay" style="padding: 12px 25px; background: rgba(0, 242, 255, 0.2); border: 2px solid #00f2ff; color: #fff; font-family: inherit; font-size: 1.1rem; font-weight: bold; cursor: pointer; text-shadow: 0 0 5px #fff; box-shadow: 0 0 15px #00f2ff;">RETROFIT SISTEM</button>
+                <button id="btn-lose-menu" style="padding: 12px 25px; background: rgba(255, 0, 127, 0.2); border: 2px solid #ff007f; color: #fff; font-family: inherit; font-size: 1.1rem; cursor: pointer; text-shadow: 0 0 5px #fff;">SYSTEM ABORT</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="config.js"></script>
+    <script src="SoundManager.js"></script>
+    <script src="SnakeAI.js"></script>
+    <script src="UIManager.js"></script>
+    
+    <script src="Player.js"></script>
+    <script src="Hardware.js"></script>
+    <script src="VFX.js"></script>
+
+    <script src="HUDManager.js"></script>
+    <script src="Game.js"></script>
+    
+    <script src="main.js"></script>
+</body>
+</html>
